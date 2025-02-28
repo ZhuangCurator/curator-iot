@@ -28,6 +28,9 @@ public enum ModbusFunctionCode {
     }
 
     public static ModbusFunctionCode fromCode(int code) {
+        if ( code < 0 ) {
+            code &= (byte) 0x7F;
+        }
         for (ModbusFunctionCode functionCode : values()) {
             if (functionCode.getCode() == code) {
                 return functionCode;

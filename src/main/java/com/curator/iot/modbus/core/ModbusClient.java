@@ -1,6 +1,8 @@
 package com.curator.iot.modbus.core;
 
-import com.curator.iot.modbus.core.msg.ModbusResponse;
+import com.curator.iot.modbus.core.packet.ModbusResponse;
+import com.curator.iot.modbus.core.master.ModbusFunction;
+import com.curator.iot.modbus.core.master.ReconnectConfig;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -17,6 +19,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Modbus Master
+ *
  * @author Jun
  * @date 2025/2/12 
  */

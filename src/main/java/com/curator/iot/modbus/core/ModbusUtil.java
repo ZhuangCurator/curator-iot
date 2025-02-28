@@ -1,7 +1,9 @@
 package com.curator.iot.modbus.core;
 
-import com.curator.iot.modbus.core.msg.ModbusResponse;
-import com.curator.iot.modbus.core.msg.response.*;
+import com.curator.iot.modbus.core.packet.ModbusRequest;
+import com.curator.iot.modbus.core.packet.ModbusResponse;
+import com.curator.iot.modbus.core.packet.request.*;
+import com.curator.iot.modbus.core.packet.response.*;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -84,5 +86,43 @@ public class ModbusUtil {
                 );
         }
         return response;
+    }
+
+    /**
+     * 解包
+     *
+     * @param functionCode 功能代码
+     * @return {@link ModbusResponse }
+     */
+    public static ModbusRequest unwrapRequest(byte functionCode) {
+        ModbusRequest request;
+        switch (ModbusFunctionCode.fromCode(functionCode)) {
+            case READ_COILS:
+            case READ_DISCRETE_INPUTS:
+                request = new ReadCoilsRequest();
+                break;
+            case READ_HOLDING_REGISTERS:
+            case READ_INPUT_REGISTERS:
+                request = new ReadRegistersRequest();
+                break;
+            case WRITE_SINGLE_COIL:
+                request = new WriteSingleCoilRequest();
+                break;
+            case WRITE_SINGLE_REGISTER:
+                request = new WriteSingleRegisterRequest();
+                break;
+            case WRITE_MULTIPLE_COILS:
+                request = new WriteMultipleCoilsRequest();
+                break;
+            case WRITE_MULTIPLE_REGISTERS:
+                request = new WriteMultipleRegistersRequest();
+                break;
+            default:
+                throw new UnsupportedOperationException(
+                        "Unsupported function code: 0x" + Integer.toHexString(functionCode)
+                );
+        }
+        request.setFunctionCode(ModbusFunctionCode.fromCode(functionCode));
+        return request;
     }
 }
